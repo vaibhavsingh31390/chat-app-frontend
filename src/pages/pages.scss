@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body,
+button,
+input[type="email"],
+input[type="text"],
+input[type="password"],
+#register-subTit {
+  font-family: "Ubuntu", sans-serif;
+  transition: 0.3s ease;
+  font-weight: 400;
+}
+// Constant Variables
+$bg-color-primary: #3e54ac;
+$bg-color-secoundry: #dbe2ef;
+$text-color-main: #3e54ac;
+$text-color-secoundry: #1746a2;
+$black: #100f0f;
+$white: #ffffff;
+$error: rgb(181, 28, 28);
+
+// REGISTER
+#register_Form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: $bg-color-secoundry;
+  padding: 3rem 3.5rem;
+  width: 450px;
+  border-radius: 10px;
+  .brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    img {
+      max-width: 5rem;
+    }
+    h1 {
+      color: $text-color-main;
+    }
+  }
+  .form-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    label {
+      color: $text-color-main;
+      font-weight: 500;
+    }
+    input {
+      padding: 0.6rem 0.5rem;
+      border-radius: 3px;
+      outline: none;
+      background-color: $white;
+      border: 2px solid $bg-color-secoundry;
+      &:focus {
+        border: 2px solid $bg-color-primary;
+        color: $black;
+      }
+    }
+  }
+  button {
+    font-weight: 500;
+    padding: 0.7rem 1.5rem;
+    border-radius: 3px;
+    outline: none;
+    border: 2px solid $bg-color-secoundry;
+    background-color: $bg-color-primary;
+    color: $white;
+    cursor: pointer;
+    &:hover {
+      border: 2px solid $bg-color-primary;
+      background-color: $bg-color-secoundry;
+      color: $text-color-main;
+    }
+  }
+  #form-control-buttom {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    justify-content: center;
+    span {
+      text-align: center;
+      color: $text-color-main;
+      font-weight: 500;
+    }
+    a {
+      text-decoration: none;
+      color: $text-color-secoundry;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: center;
+    }
+  }
+  .error-message {
+    padding: 0rem 1rem;
+    color: $error;
+    font-size: 14px;
+    text-align: justify;
+    font-weight: 700;
+  }
+}
+
+// TOASTIFY
+.Toastify__close-button > svg {
+  fill: $black !important;
+}
+.Toastify__toast-body > div:last-child {
+  font-size: 15px !important;
+}
+.Toastify__progress-bar-theme--colored.Toastify__progress-bar--error {
+  background: $error;
+}
