@@ -7,6 +7,7 @@ import logo from "./../assets/logo.svg";
 import {ToastContainer, toast} from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css"; 
 import axios from "axios";
+import { registerRoute } from "../utils/APIRoutes";
 function Register() {
   const [values, setValues] = useState({
     username: "",
@@ -19,39 +20,16 @@ function Register() {
     event.preventDefault();
     if(handleValidation()){
       const { username, email, password, confirmPassword } = values;
-      const {data} = await axios.post()
+      const {data} = await axios.post(registerRoute, {
+        username,
+        email,
+        password
+      })
     }
     alert("form");
   };
 
   const handleValidation = () => {
-    // const ValidationLowerc = /^(?=.*[a-z])$/;
-    // const ValidationUpperc = /^(?=.*[A-Z])$/;
-    // const ValidationNum = /^(?=.*\d)$/;
-    // const ValidationSpecialc = /^(?=.*[!@#$%^&*()_+])$/;
-    // const ValidationMinc = /^{10,}$/;
-    // switch (password) {
-    //   case ValidationLowerc.test(password):
-    //     alert("Lower case");
-    //     break;
-    //   case ValidationUpperc.test(password):
-    //     alert("Lower case");
-    //     break;
-    //   case ValidationNum.test(password):
-    //     alert("Lower case");
-    //     break;
-    //   case ValidationSpecialc.test(password):
-    //     alert("Lower case");
-    //     break;
-    //   case ValidationMinc.test(password):
-    //     alert("Lower case");
-    //     break;
-
-    //   default:
-    //     break;
-    // }
-
-
     const { username, email, password, confirmPassword } = values;
     if(password !== confirmPassword){
       toast.error("Password & confirm password don't match.", {
@@ -155,11 +133,11 @@ function Register() {
             </span>
           </span>
 
-          <div className="error-message">
+          {/* <div className="error-message">
             <ul>
               <li>Some error</li>
             </ul>
-          </div>
+          </div> */}
         </form>
       </FromContainer>
       <ToastContainer toastStyle={{ backgroundColor: "#ffffff", color:"#3E54AC"}} />
