@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import "./pages.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "./../assets/logo.svg";
 import {ToastContainer, toast} from "react-toastify"; 
@@ -15,7 +15,7 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(handleValidation()){
@@ -23,10 +23,16 @@ function Register() {
       const {data} = await axios.post(registerRoute, {
         username,
         email,
-        password
+        password,
+        confirmPassword
       })
+      if(data.status === false){
+        toast.error(data.message);
+      }else{
+        localStorage.setItem('chat-app-user', JSON.stringify(data.payload));
+      }
+      navigate("/");
     }
-    alert("form");
   };
 
   const handleValidation = () => {
@@ -79,7 +85,7 @@ function Register() {
       <FromContainer>
         <form id="register_Form" onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
-            <img src={logo} alt="" srcset="" />
+            <img srcSet ={logo} alt=""  />
             <h1>Chatify</h1>
           </div>
           <div className="form-control">
