@@ -16,7 +16,6 @@ function SetAvatar() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAvatars, setSelectedAvatars] = useState(undefined);
   const setProfilePicture = async () => {
-    console.log(selectedAvatars);
     if(selectedAvatars === undefined){
         toast.error("Please select a profile picture.", {
             position: "bottom-right",
@@ -26,7 +25,18 @@ function SetAvatar() {
             theme:"colored",
           })
     }else{
-        const user = JSON.parse(localStorage.getItem('chat-app-user'))
+        const user = JSON.parse(localStorage.getItem('chat-app-user'));
+        const {data} = await axios.post(setAvatarRoute, {
+          username: user.username,
+          avatar: avatars[selectedAvatars]
+        })
+        if(data.status === false){
+          toast.error(data.message);
+        }else if(data.status === "Success"){
+          console.log(data);
+          localStorage.setItem('chat-app-user-meta', JSON.stringify(data.payload.avatarImage));
+          navigate("/");
+        }
     }
   };
   useEffect(() => {
@@ -48,7 +58,7 @@ function SetAvatar() {
       for (let index = 0; index < 4; index++) {
         requests.push(fetchData());
       }
-
+      
       try {
         const images = await Promise.all(requests);
         setAvatars(images.filter((image) => image !== null));

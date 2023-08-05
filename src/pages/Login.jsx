@@ -32,7 +32,7 @@ function Login() {
         toast.error(data.message);
       }else if(data.status === "Success"){
         localStorage.setItem('chat-app-user', JSON.stringify(data.payload));
-        navigate("/");
+        navigate("/set-Avatar");
       }
     }
   };
