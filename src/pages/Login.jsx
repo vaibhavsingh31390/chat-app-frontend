@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState,  } from "react";
+import React, { useState,useEffect  } from "react";
 import "./pages.scss";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -14,6 +14,12 @@ function Login() {
     password: "",
   });
   const navigate = useNavigate();
+  useEffect(()=>{
+    if(localStorage.getItem('chat-app-user') && localStorage.getItem('chat-app-user') != null){
+      navigate("/");
+    }
+  },  [navigate]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(handleValidation()){
@@ -24,11 +30,10 @@ function Login() {
       })
       if(data.status === false){
         toast.error(data.message);
-      }else{
+      }else if(data.status === "Success"){
         localStorage.setItem('chat-app-user', JSON.stringify(data.payload));
+        navigate("/");
       }
-      console.log(data);
-      // navigate("/");
     }
   };
 
@@ -62,7 +67,7 @@ function Login() {
   return (
     <>
       <FromContainer>
-        <form id="register_Form" onSubmit={(event) => handleSubmit(event)}>
+        <form id="register_Login_Form" onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
             <img srcSet ={logo} alt=""/>
             <h1>Chatify</h1>

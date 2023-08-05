@@ -83,7 +83,7 @@ function Register() {
   return (
     <>
       <FromContainer>
-        <form id="register_Form" onSubmit={(event) => handleSubmit(event)}>
+        <form id="register_Login_Form" onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
             <img srcSet ={logo} alt=""  />
             <h1>Chatify</h1>
