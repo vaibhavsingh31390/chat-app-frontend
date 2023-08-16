@@ -5,6 +5,7 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 body,
 button,
 input[type="email"],
@@ -15,6 +16,7 @@ input[type="password"],
   transition: 0.3s ease;
   font-weight: 400;
 }
+
 // Constant Variables
 $bg-color-primary: #3e54ac;
 $bg-color-secoundry: #dbe2ef;
@@ -33,41 +35,50 @@ $error: rgb(181, 28, 28);
   padding: 3rem 3.5rem;
   width: 450px;
   border-radius: 10px;
+
   @media (max-width: 768px) {
     border-radius: 0;
   }
+
   .brand {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
+
     img {
       max-width: 5rem;
     }
+
     h1 {
       color: $text-color-main;
     }
   }
+
   .form-control {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+
     label {
       color: $text-color-main;
       font-weight: 500;
     }
+
     input {
       padding: 0.6rem 0.5rem;
       border-radius: 3px;
       outline: none;
       background-color: $white;
       border: 2px solid $bg-color-secoundry;
+
       &:focus {
         border: 2px solid $bg-color-primary;
         color: $black;
       }
     }
   }
+
   button {
     font-weight: 500;
     padding: 0.7rem 1.5rem;
@@ -77,22 +88,26 @@ $error: rgb(181, 28, 28);
     background-color: $bg-color-primary;
     color: $white;
     cursor: pointer;
+
     &:hover {
       border: 2px solid $bg-color-primary;
       background-color: $bg-color-secoundry;
       color: $text-color-main;
     }
   }
+
   #form-control-buttom {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
     justify-content: center;
+
     span {
       text-align: center;
       color: $text-color-main;
       font-weight: 500;
     }
+
     a {
       text-decoration: none;
       color: $text-color-secoundry;
@@ -102,6 +117,7 @@ $error: rgb(181, 28, 28);
       text-align: center;
     }
   }
+
   .error-message {
     padding: 0rem 1rem;
     color: $error;
@@ -112,12 +128,14 @@ $error: rgb(181, 28, 28);
 }
 
 // TOASTIFY
-.Toastify__close-button > svg {
+.Toastify__close-button>svg {
   fill: $black !important;
 }
-.Toastify__toast-body > div:last-child {
+
+.Toastify__toast-body>div:last-child {
   font-size: 15px !important;
 }
+
 .Toastify__progress-bar-theme--colored.Toastify__progress-bar--error {
   background: $error;
 }
@@ -125,18 +143,21 @@ $error: rgb(181, 28, 28);
 // SET AVATARS
 .set-avatars-container {
   background-color: $bg-color-primary;
+
   .title-container {
     h1 {
       color: $white;
       text-align: center;
     }
   }
+
   .avatars {
     cursor: pointer;
     display: flex;
     gap: 2rem;
     padding-left: 20px;
     padding-right: 20px;
+
     .avatar img {
       display: flex;
       justify-content: center;
@@ -147,21 +168,25 @@ $error: rgb(181, 28, 28);
       border-radius: 50%;
       transition: 0.25s ease-in-out;
     }
-    .selected img{
+
+    .selected img {
       border: 6px solid $white !important;
       border-radius: 50%;
     }
+
     @media (min-width: 768px) {
       .avatar img {
         width: 150px;
       }
     }
+
     @media (max-width: 767px) {
       .avatar img {
         width: 150px;
       }
     }
   }
+
   .submit-btn {
     font-weight: 700;
     padding: 0.7rem 1.5rem;
@@ -171,13 +196,76 @@ $error: rgb(181, 28, 28);
     background-color: $white;
     color: $text-color-main;
     cursor: pointer;
+
     &:hover {
       border: 2px solid $white;
       background-color: transparent;
       color: $white;
     }
   }
-  .loader{
+
+  .loader {
     background-color: $bg-color-primary;
+  }
+}
+
+// CHAT MAIN
+.chat-container {
+  background-color: $bg-color-secoundry;
+  height: 90vh;
+  width: 90vw;
+  display: grid;
+  grid-template-columns: 25% 75%;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 35% 65%;
+  }
+
+  .left_Section {
+    background-color: $white;
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding: 20px 0px;
+
+      img {
+        max-width: 2rem;
+      }
+
+      h1 {
+        color: $text-color-main;
+        font-size: 16px;
+      }
+    }
+
+    .contacts {
+      .contact {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      img {
+        min-width: 2rem;
+        max-width: 2rem;
+      }
+    }
+
+    .current-user {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+
+      .avatar {
+        img {
+          min-width: 2rem;
+          max-width: 2rem;
+        }
+      }
+    }
   }
 }

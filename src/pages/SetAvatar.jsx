@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import "./pages.scss";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import loader from "./../assets/loader.gif";
@@ -10,8 +9,14 @@ import axios from "axios";
 import { Buffer } from "buffer";
 import { setAvatarRoute } from "../utils/APIRoutes";
 function SetAvatar() {
-  const apiForAvatars = "https://api.multiavatar.com/45678945";
   const navigate = useNavigate();
+  useEffect(() => {
+    let checkLoggedIn = localStorage.getItem('chat-app-user');
+    if (!checkLoggedIn) {
+      navigate('/');
+    }
+  }, [navigate]);
+  const apiForAvatars = "https://api.multiavatar.com/45678945";
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAvatars, setSelectedAvatars] = useState(undefined);
@@ -28,14 +33,14 @@ function SetAvatar() {
         const user = JSON.parse(localStorage.getItem('chat-app-user'));
         const {data} = await axios.post(setAvatarRoute, {
           username: user.username,
-          avatar: avatars[selectedAvatars]
+          avatar: avatars[selectedAvatars],
+          token: user.token,
         })
         if(data.status === false){
           toast.error(data.message);
         }else if(data.status === "Success"){
-          console.log(data);
           localStorage.setItem('chat-app-user-meta', JSON.stringify(data.payload.avatarImage));
-          navigate("/");
+          navigate("/chat");
         }
     }
   };

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useState,useEffect  } from "react";
-import "./pages.scss";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "./../assets/logo.svg";

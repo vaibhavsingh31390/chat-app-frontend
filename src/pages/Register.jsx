@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState,  } from "react";
-import "./pages.scss";
+import React, { useState,useEffect  } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import logo from "./../assets/logo.svg";
@@ -16,6 +15,11 @@ function Register() {
     confirmPassword: "",
   });
   const navigate = useNavigate();
+  useEffect(()=>{
+    if(localStorage.getItem('chat-app-user') && localStorage.getItem('chat-app-user') != null){
+      navigate("/");
+    }
+  },  [navigate]);
   const handleSubmit = async (event) => {
     event.preventDefault();
     if(handleValidation()){
@@ -31,7 +35,7 @@ function Register() {
       }else{
         localStorage.setItem('chat-app-user', JSON.stringify(data.payload));
       }
-      navigate("/");
+      navigate("/set-avatar");
     }
   };
 
