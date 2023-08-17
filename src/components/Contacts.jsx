@@ -12,9 +12,8 @@ function Contact({ contacts, currentUser }) {
       setCurrentName(currentUser[0]);
       setCurrentUserImage(currentUser[1]);
     }
-    console.log(currentName, currentUserImage);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
-
   return (
     <>
       {currentUserImage && currentName && (
@@ -25,12 +24,14 @@ function Contact({ contacts, currentUser }) {
           </div>
 
           <div className="contacts">
+            <h3>Conatcts</h3>
             {contacts.map((contact, ind) => (
               <div
                 key={ind}
                 className={`contact${
-                  currentSelected === ind ? " selected" : ""
+                  currentSelected === ind ? " selected-contact" : ""
                 }`}
+                onClick={() => setCurrentSelected(ind)}
               >
                 <img
                   src={`data:image/svg+xml;base64,${contact.avatarImage}`}
@@ -56,6 +57,10 @@ function Contact({ contacts, currentUser }) {
   );
 }
 
-const ContactsContainer = styled.div``;
-
+const ContactsContainer = styled.div`
+  display: grid;
+  grid-template-rows: 7% 83% 10%;
+  overflow: hidden;
+  background-color: #3e54ac;
+`
 export default Contact;

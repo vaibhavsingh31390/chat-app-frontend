@@ -21,10 +21,11 @@ input[type="password"],
 $bg-color-primary: #3e54ac;
 $bg-color-secoundry: #dbe2ef;
 $text-color-main: #3e54ac;
-$text-color-secoundry: #1746a2;
+$text-color-secoundry: rgb(23, 69, 161);
 $black: #100f0f;
 $white: #ffffff;
 $error: rgb(181, 28, 28);
+$transition: 0.3s ease;
 
 // REGISTER //LOGIN
 #register_Login_Form {
@@ -215,14 +216,15 @@ $error: rgb(181, 28, 28);
   height: 90vh;
   width: 90vw;
   display: grid;
-  grid-template-columns: 25% 75%;
+  grid-template-columns: 35% 65%;
 
   @media (min-width: 768px) {
-    grid-template-columns: 35% 65%;
+    grid-template-columns: 25% 65%;
   }
 
   .left_Section {
     background-color: $white;
+
     .brand {
       display: flex;
       justify-content: center;
@@ -241,16 +243,69 @@ $error: rgb(181, 28, 28);
     }
 
     .contacts {
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      height: inherit;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: $white;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: $bg-color-primary;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: $bg-color-primary;
+      }
+
       .contact {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 1rem;
+        gap: 2rem;
+        padding: 5% 5%;
+        cursor: pointer;
+        background: rgba(23, 69, 161, 0.1);
+        transition: $transition;
+
+        &:nth-child(even) {
+          background: $white;
+        }
+
+        &:hover {
+          background: rgba(23, 69, 161, 0.4);
+        }
+
+      }
+
+      .selected-contact {
+        background: rgba(23, 69, 161, 0.6) !important;
+      }
+
+      h3 {
+        color: $text-color-main;
+        font-size: 16px;
+        text-align: left;
+        padding: 2% 5%;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: $white;
+        border-top: 2px solid $bg-color-secoundry;
+        box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgb(255, 255, 255);
       }
 
       img {
-        min-width: 2rem;
-        max-width: 2rem;
+        min-width: 3rem;
+        max-width: 3rem;
       }
     }
 
@@ -259,11 +314,15 @@ $error: rgb(181, 28, 28);
       justify-content: flex-start;
       align-items: center;
       gap: 1rem;
+      padding: 2% 5%;
+      box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
+      text-align: center;
+      background: rgba(23, 69, 161, 0.4);
 
       .avatar {
         img {
-          min-width: 2rem;
-          max-width: 2rem;
+          min-width: 3.5rem;
+          max-width: 3.5rem;
         }
       }
     }
