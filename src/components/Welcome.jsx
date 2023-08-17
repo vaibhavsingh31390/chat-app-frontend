@@ -6,7 +6,7 @@ function Contact({currentUser }) {
   return (
     <>
         <WelcomeContainer className="right_Section">
-
+                    
         </WelcomeContainer>
     </>
   );
