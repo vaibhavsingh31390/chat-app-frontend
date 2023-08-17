@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import logo from "./../assets/logo.svg";
 import styled from "styled-components";
-
-function Contact({ contacts, currentUser }) {
+function Contact({
+  contacts,
+  currentUser,
+  currentSelected,
+  setCurrentSelected,
+  currentSelectedUser,
+  setCurrentSelectedUser,
+}) {
   const [currentName, setCurrentName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
-  // eslint-disable-next-line no-unused-vars
-  const [currentSelected, setCurrentSelected] = useState(undefined);
   useEffect(() => {
     if (currentUser) {
       setCurrentName(currentUser[0]);
       setCurrentUserImage(currentUser[1]);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
   return (
     <>
@@ -31,7 +34,13 @@ function Contact({ contacts, currentUser }) {
                 className={`contact${
                   currentSelected === ind ? " selected-contact" : ""
                 }`}
-                onClick={() => setCurrentSelected(ind)}
+                onClick={() => {
+                  setCurrentSelected(ind);
+                  setCurrentSelectedUser({
+                    'Avatar':contact.avatarImage,
+                    'Username': contact.username,
+                  });
+                }}
               >
                 <img
                   src={`data:image/svg+xml;base64,${contact.avatarImage}`}
@@ -59,8 +68,8 @@ function Contact({ contacts, currentUser }) {
 
 const ContactsContainer = styled.div`
   display: grid;
-  grid-template-rows: 7% 83% 10%;
+  grid-template-rows: 10% 80% 10%;
   overflow: hidden;
   background-color: #3e54ac;
-`
+`;
 export default Contact;

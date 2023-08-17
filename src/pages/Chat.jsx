@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Contact from "./../components/Contacts";
+import Welcome from "./../components/Welcome";
+import ChatContainer from "./../components/ChatContainer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -11,6 +13,8 @@ import { chatRouteAllUsers } from "../utils/APIRoutes";
 function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
+  const [currentSelected, setCurrentSelected] = useState(undefined);
+  const [currentSelectedUser, setCurrentSelectedUser] = useState({undefined});
   const navigate = useNavigate();
   const firstRender = useRef(true);
   const assignCurrentUser = async () => {
@@ -56,12 +60,24 @@ function Chat() {
       };
       fetchContacts();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Container>
       <div className="chat-container">
-        <Contact contacts={contacts} currentUser={currentUser} />
+        <Contact
+          contacts={contacts}
+          currentUser={currentUser}
+          currentSelected={currentSelected}
+          setCurrentSelected={setCurrentSelected}
+          currentSelectedUser={currentSelectedUser}
+          setCurrentSelectedUser={setCurrentSelectedUser}
+        />
+        {currentSelected || currentSelected === 0 ? (
+          <ChatContainer currentSelectedUser={currentSelectedUser}></ChatContainer>
+        ) : (
+          <Welcome currentUser={currentUser}></Welcome>
+        )}
       </div>
     </Container>
   );

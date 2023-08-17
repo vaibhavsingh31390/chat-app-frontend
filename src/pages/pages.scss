@@ -219,7 +219,7 @@ $transition: 0.3s ease;
   grid-template-columns: 35% 65%;
 
   @media (min-width: 768px) {
-    grid-template-columns: 25% 65%;
+    grid-template-columns: 25% 75%;
   }
 
   .left_Section {
@@ -230,8 +230,7 @@ $transition: 0.3s ease;
       justify-content: center;
       align-items: center;
       gap: 1rem;
-      padding: 20px 0px;
-
+      padding: 1rem;
       img {
         max-width: 2rem;
       }
@@ -269,7 +268,7 @@ $transition: 0.3s ease;
         justify-content: flex-start;
         align-items: center;
         gap: 2rem;
-        padding: 5% 5%;
+        padding: 3% 5%;
         cursor: pointer;
         background: rgba(23, 69, 161, 0.1);
         transition: $transition;
@@ -321,10 +320,33 @@ $transition: 0.3s ease;
 
       .avatar {
         img {
-          min-width: 3.5rem;
-          max-width: 3.5rem;
+          min-width: 3rem;
+          max-width: 3rem;
         }
       }
     }
   }
+}
+
+
+.right_Section{
+  .chat-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    height: 10%;
+    background-color: $white;
+    .user-detail{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        .user-avatar{
+          img {
+            min-width: 2.5rem;
+            max-width: 2.5rem;
+          }
+        }
+    }
+}
 }
