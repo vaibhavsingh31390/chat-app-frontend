@@ -21,7 +21,7 @@ function Chat() {
     try {
       const user = JSON.parse(localStorage.getItem("chat-app-user"));
       const userMeta = JSON.parse(localStorage.getItem("chat-app-user-meta"));
-      setcurrentUser([user, userMeta]);
+      setcurrentUser([user, userMeta.avatarImage]);
       if (user) {
         if (userMeta) {
           return user;

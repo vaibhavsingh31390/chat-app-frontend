@@ -17,7 +17,7 @@ function Register() {
   const navigate = useNavigate();
   useEffect(()=>{
     if(localStorage.getItem('chat-app-user') && localStorage.getItem('chat-app-user') != null){
-      navigate("/");
+      navigate(navigate("/set-avatar"));
     }
   },  [navigate]);
   const handleSubmit = async (event) => {
@@ -139,7 +139,7 @@ function Register() {
           <span id="form-control-buttom">
             <button type="submit">Create Account</button>
             <span>
-              Already Have An Account ?<Link to="/login"> Login</Link>
+              Already Have An Account ?<Link to="/"> Login</Link>
             </span>
           </span>
 

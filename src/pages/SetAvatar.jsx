@@ -39,7 +39,7 @@ function SetAvatar() {
         if(data.status === false){
           toast.error(data.message);
         }else if(data.status === "Success"){
-          localStorage.setItem('chat-app-user-meta', JSON.stringify(data.payload.avatarImage));
+          localStorage.setItem('chat-app-user-meta', JSON.stringify({avatarImage : data.payload.avatarImage}));
           navigate("/chat");
         }
     }

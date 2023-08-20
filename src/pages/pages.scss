@@ -231,6 +231,7 @@ $transition: 0.3s ease;
       align-items: center;
       gap: 1rem;
       padding: 1rem;
+
       img {
         max-width: 2rem;
       }
@@ -329,24 +330,143 @@ $transition: 0.3s ease;
 }
 
 
-.right_Section{
-  .chat-header{
+.right_Section {
+  .chat-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1em;
-    height: 10%;
     background-color: $white;
-    .user-detail{
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        .user-avatar{
-          img {
-            min-width: 2.5rem;
-            max-width: 2.5rem;
+
+    .user-detail {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .user-avatar {
+        img {
+          min-width: 2.5rem;
+          max-width: 2.5rem;
+        }
+      }
+    }
+  }
+
+  .chat-input {
+    display: grid;
+    align-items: center;
+
+    .InputContainer {
+      padding: 0em 1em;
+
+      .emoji-picker {
+        svg {
+          transition: $transition;
+          font-size: 24px;
+          color: $text-color-main;
+          background-color: $white;
+          border-radius: 50%;
+          box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
+          cursor: pointer;
+
+          path {
+            fill: $text-color-main;
+          }
+
+          &:hover {
+            box-shadow: none;
+            color: $text-color-main;
           }
         }
+
+        .EmojiPickerReact {
+          height: 360px !important;
+          width: 320px !important;
+          position: absolute;
+          bottom: 99px;
+          background-color: #1745a11a !important;
+          .epr-emoji-category-label{
+            background-color: $bg-color-primary;
+            color: $white;
+          }
+          .epr-body{
+            &::-webkit-scrollbar {
+              width: 5px;
+            }
+      
+            &::-webkit-scrollbar-track {
+              background: $white;
+            }
+      
+            &::-webkit-scrollbar-thumb {
+              background: $bg-color-primary;
+            }
+      
+            &::-webkit-scrollbar-thumb:hover {
+              background: $bg-color-primary;
+            }
+          }
+        }
+      }
+
+      .input-form-message {
+        #message_form {
+          display: flex;
+          align-items: center;
+          width: 100%;
+
+          .message_box {
+            width: 80%;
+
+            #message_Chat {
+              width: 99%;
+              background-color: $bg-color-secoundry;
+              border: 2px solid $bg-color-primary;
+              color: $text-color-main;
+              padding: 10px;
+              border-radius: 4px;
+              font-size: 16px;
+              transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+
+              &:focus {
+                outline: none;
+                border-color: $text-color-secoundry;
+                background-color: white;
+              }
+
+              &::placeholder {
+                color: $text-color-main;
+              }
+            }
+
+          }
+
+          .message_button {
+            width: 20%;
+
+            #message_send {
+              width: 100%;
+              font-weight: 500;
+              padding: 10px;
+              font-size: 16px;
+              outline: none;
+              border: 2px solid $bg-color-primary;
+              background-color: $bg-color-primary;
+              color: $white;
+              cursor: pointer;
+
+              &:hover {
+                opacity: 0.8;
+              }
+
+              svg {
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+      }
     }
-}
+  }
+
 }
