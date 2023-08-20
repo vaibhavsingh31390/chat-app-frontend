@@ -17,6 +17,7 @@ function Contact({
       setCurrentUserImage(currentUser[1]);
     }
   }, [currentUser]);
+
   return (
     <>
       {currentUserImage && currentName && (
@@ -37,6 +38,7 @@ function Contact({
                 onClick={() => {
                   setCurrentSelected(ind);
                   setCurrentSelectedUser({
+                    '_id': contact._id,
                     'Avatar':contact.avatarImage,
                     'Username': contact.username,
                   });

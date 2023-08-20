@@ -14,7 +14,7 @@ function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-  const [currentSelectedUser, setCurrentSelectedUser] = useState({undefined});
+  const [currentSelectedUser, setCurrentSelectedUser] = useState({ undefined });
   const navigate = useNavigate();
   const firstRender = useRef(true);
   const assignCurrentUser = async () => {
@@ -34,7 +34,7 @@ function Chat() {
         return null; // Return early if navigating
       }
     } catch (error) {
-      throw new Error("User Error");
+      navigate("/");
     }
   };
 
@@ -52,10 +52,11 @@ function Chat() {
               },
             });
             setContacts(response.data.payload.list);
-            // console.log(response);
           } catch (error) {
             console.error(error);
           }
+        } else {
+          navigate("/");
         }
       };
       fetchContacts();
@@ -74,7 +75,9 @@ function Chat() {
           setCurrentSelectedUser={setCurrentSelectedUser}
         />
         {currentSelected || currentSelected === 0 ? (
-          <ChatContainer currentSelectedUser={currentSelectedUser}></ChatContainer>
+          <ChatContainer
+            currentSelectedUser={currentSelectedUser}
+          ></ChatContainer>
         ) : (
           <Welcome currentUser={currentUser}></Welcome>
         )}
