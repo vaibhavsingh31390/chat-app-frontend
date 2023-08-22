@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
+import fun from "./../components/Functions";
 import chatIcon from "./../assets/welcomeChat.gif";
 import styled from "styled-components";
 
-function Contact({ currentUser }) {
+function Contact() {
   // eslint-disable-next-line no-unused-vars
   const [currentName, setCurrentName] = useState(undefined);
   useEffect(() => {
-    if (currentUser) {
-      setCurrentName(currentUser[0]);
-    }
-  }, [currentUser]);
+    try {
+      let res = fun.getUserData();
+      if (res) {
+        setCurrentName(res);
+      }
+    } catch (error) {}
+  }, []);
   return (
     <>
       <WelcomeContainer className="right_Section">
@@ -17,7 +21,9 @@ function Contact({ currentUser }) {
           <img src={chatIcon} alt="" />
         </div>
         <div className="title">
-          <h1>Welcome to Chaitfy <span className="username">{}</span></h1>
+          <h1>
+            Welcome to Chaitfy <span className="username">{}</span>
+          </h1>
           <h3>Realtime chat with your friends.</h3>
         </div>
       </WelcomeContainer>
@@ -37,7 +43,7 @@ const WelcomeContainer = styled.div`
     img {
       width: 150px;
     }
-    .username{
+    .username {
       color: #3e54ac;
     }
   }

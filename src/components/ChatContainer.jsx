@@ -3,29 +3,8 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import ChatInput from "./ChatInput";
 import Message from "./Messages";
-import axios from "axios";
-import { sendMessageRoute } from "../utils/APIRoutes";
-function ChatContainer({ currentSelectedUser }) {
-  const handleSendMessage = async (msg) => {
-    const userData = JSON.parse(localStorage.getItem("chat-app-user"));
-    const response = await axios.post(sendMessageRoute, {
-      token: userData.token,
-      recipient_type: "individual",
-      from: {
-        username: userData.username,
-        _id: userData._id,
-      },
-      to: {
-        username: currentSelectedUser.Username,
-        _id: currentSelectedUser._id,
-      },
-      message: {
-        type: "Text",
-        text: msg,
-      },
-    });
-    console.log(response);
-  };
+
+function ChatContainer({ currentSelected }) {
 
   return (
     <>
@@ -34,12 +13,12 @@ function ChatContainer({ currentSelectedUser }) {
           <div className="user-detail">
             <div className="user-avatar">
               <img
-                src={`data:image/svg+xml;base64,${currentSelectedUser.Avatar}`}
+                src={`data:image/svg+xml;base64,${currentSelected[1].Avatar}`}
                 alt="avatar"
               />
             </div>
             <div className="user-name">
-              <h3>{currentSelectedUser.Username}</h3>
+              <h3>{currentSelected[1].Username}</h3>
             </div>
           </div>
           <div className="active-status">last seen {20}m ago</div>
@@ -48,7 +27,7 @@ function ChatContainer({ currentSelectedUser }) {
           <Message></Message>
         </div>
         <div className="chat-input">
-          <ChatInput handleSendMessage={handleSendMessage} />
+          <ChatInput currentSelected={currentSelected}/>
         </div>
       </Container>
     </>

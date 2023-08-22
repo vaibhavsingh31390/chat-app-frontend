@@ -3,7 +3,13 @@
 import React from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
-import { loginRoute, registerRoute, setAvatarRoute, chatRouteAllUsers } from "../utils/APIRoutes";
+import {
+  loginRoute,
+  registerRoute,
+  setAvatarRoute,
+  chatRouteAllUsers,
+  sendMessageRoute,
+} from "../utils/APIRoutes";
 
 class Functions {
   constructor(options, user) {
@@ -213,7 +219,7 @@ class Functions {
   // SET AVATAR MATHODS
 
   // CHAT
-  static assignCurrentUser =  (navigateFunction) => {
+  static assignCurrentUser = (navigateFunction) => {
     try {
       const user = this.getUserData();
       const userMeta = this.getUserDataMeta();
@@ -233,24 +239,49 @@ class Functions {
     }
   };
 
-  static fetchContacts = async (navigateFunction)=>{
-        const user = this.assignCurrentUser(navigateFunction);
-        if (user) {
-          try {
-            const response = await axios.get(chatRouteAllUsers, {
-              params: {
-                username: user[0].username,
-                token: user[0].token,
-              },
-            });
-            return [response.data.payload.list, user]
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          navigateFunction("/");
-        }
-  }
+  static fetchContacts = async (navigateFunction) => {
+    const user = this.assignCurrentUser(navigateFunction);
+    if (user) {
+      try {
+        const response = await axios.get(chatRouteAllUsers, {
+          params: {
+            username: user[0].username,
+            token: user[0].token,
+          },
+        });
+        return [response.data.payload.list, user];
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      navigateFunction("/");
+    }
+  };
+
+  static sendMessage = async (Param, Message) => {
+    try {
+      const userData = this.getUserData();
+      const response = await axios.post(sendMessageRoute, {
+        token: userData.token,
+        recipient_type: "individual",
+        from: {
+          username: userData.username,
+          _id: userData._id,
+        },
+        to: {
+          username: Param[1].Username,
+          _id: Param[1]._id,
+        },
+        message: {
+          type: "Text",
+          text: Message,
+        },
+      });
+      return response;
+    } catch (error) {
+      return error;
+    }
+  };
   // CHAT
 }
 

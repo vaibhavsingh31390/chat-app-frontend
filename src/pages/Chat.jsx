@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react";
 import fun from "./../components/Functions";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Contact from "./../components/Contacts";
 import Welcome from "./../components/Welcome";
@@ -14,7 +14,6 @@ function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-  const [currentSelectedUser, setCurrentSelectedUser] = useState({ undefined });
 
   const navigate = useNavigate();
 
@@ -45,12 +44,10 @@ function Chat() {
           currentUser={currentUser}
           currentSelected={currentSelected}
           setCurrentSelected={setCurrentSelected}
-          currentSelectedUser={currentSelectedUser}
-          setCurrentSelectedUser={setCurrentSelectedUser}
         />
         {currentSelected || currentSelected === 0 ? (
           <ChatContainer
-            currentSelectedUser={currentSelectedUser}
+          currentSelected={currentSelected}
           ></ChatContainer>
         ) : (
           <Welcome currentUser={currentUser}></Welcome>

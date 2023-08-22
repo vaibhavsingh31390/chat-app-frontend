@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import fun from "./../components/Functions";
 import styled from "styled-components";
 // eslint-disable-next-line no-unused-vars
 import Picker from "emoji-picker-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
-function ChatInput({ handleSendMessage }) {
+function ChatInput({ currentSelected }) {
+
   const [message, setMessage] = useState("");
   const [emojiPickState, setEmojiPickSate] = useState(false);
-
   const HandleEmojiPicker = () => {
     setEmojiPickSate(!emojiPickState);
   };
@@ -19,10 +20,16 @@ function ChatInput({ handleSendMessage }) {
   const handleSend = async (e) => {
     e.preventDefault();
     if (message.length > 0) {
-      handleSendMessage(message);
-      setMessage("");
+      try {
+        let res = await fun.sendMessage(currentSelected, message);
+        if (res.status === 201) {
+          console.log(res);
+          setMessage("");
+        }
+      } catch (error) {}
     }
   };
+
   return (
     <>
       <InputContainer className="InputContainer">

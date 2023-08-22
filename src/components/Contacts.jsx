@@ -24,7 +24,6 @@ function Contact({
 
   useEffect(() => {
     if (currentSelectedUser) {
-      console.log(currentSelectedUser);
       localStorage.setItem("current-chat-data", JSON.stringify({_id : currentSelectedUser._id, username : currentSelectedUser.Username}));
     }
   }, [currentSelectedUser]);
@@ -47,12 +46,11 @@ function Contact({
                   currentSelected === ind ? " selected-contact" : ""
                 }`}
                 onClick={() => {
-                  setCurrentSelected(ind);
-                  setCurrentSelectedUser({
+                  setCurrentSelected([ind, {
                     _id: contact._id,
                     Avatar: contact.avatarImage,
                     Username: contact.username,
-                  });
+                  }]);
                 }}
               >
                 <img
@@ -71,7 +69,7 @@ function Contact({
                 alt="avatar"
               />
             </div>
-            <div className="username">{currentName.username}</div>
+            <div className="username">{currentName}</div>
           </div>
         </ContactsContainer>
       )}
