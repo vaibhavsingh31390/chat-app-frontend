@@ -360,6 +360,8 @@ $transition: 0.3s ease;
       padding: 0em 1em;
 
       .emoji-picker {
+        position: absolute;
+        left: 3%;
         svg {
           transition: $transition;
           font-size: 24px;
@@ -424,6 +426,7 @@ $transition: 0.3s ease;
               border: 2px solid $bg-color-primary;
               color: $text-color-main;
               padding: 10px;
+              padding-left: 6%;
               border-radius: 4px;
               font-size: 16px;
               transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;

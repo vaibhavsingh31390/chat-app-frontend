@@ -57,8 +57,9 @@ function ChatInput({ handleSendMessage }) {
   );
 }
 const InputContainer = styled.div`
+  position: relative;
   display: grid;
-  grid-template-columns: 4% 96%;
+  grid-template-columns: 100%;
   align-items: center;
 `;
 export default ChatInput;

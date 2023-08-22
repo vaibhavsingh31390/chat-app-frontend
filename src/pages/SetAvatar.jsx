@@ -1,79 +1,53 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import fun from "./../components/Functions";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import loader from "./../assets/loader.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { Buffer } from "buffer";
-import { setAvatarRoute } from "../utils/APIRoutes";
 function SetAvatar() {
   const navigate = useNavigate();
   useEffect(() => {
-    let checkLoggedIn = localStorage.getItem('chat-app-user');
-    if (!checkLoggedIn) {
-      navigate('/');
-    }
-  }, [navigate]);
-  const apiForAvatars = "https://api.multiavatar.com/45678945";
+    fun.useLocalStorageAndNavigate(navigate);
+  }, []);
+  const protocol = useRef(true);
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAvatars, setSelectedAvatars] = useState(undefined);
-  const setProfilePicture = async () => {
-    if(selectedAvatars === undefined){
-        toast.error("Please select a profile picture.", {
-            position: "bottom-right",
-            autoClose: 8000,
-            pauseOnHover: true,
-            draggable: false,
-            theme:"colored",
-          })
-    }else{
-        const user = JSON.parse(localStorage.getItem('chat-app-user'));
-        const {data} = await axios.post(setAvatarRoute, {
-          username: user.username,
-          avatar: avatars[selectedAvatars],
-          token: user.token,
-        })
-        if(data.status === false){
-          toast.error(data.message);
-        }else if(data.status === "Success"){
-          localStorage.setItem('chat-app-user-meta', JSON.stringify({avatarImage : data.payload.avatarImage}));
-          navigate("/chat");
-        }
+
+  const handleSetProfilePicture = async () => {
+    try {
+      let res = await fun.setProfilePicture(
+        selectedAvatars,
+        toast,
+        avatars,
+        navigate
+      );
+      if (res) {
+        console.log(res);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${apiForAvatars}${Math.round(Math.random() * 1000)}?apikey=PlFuQgL1B4idCA`
-        );
-        const image = response.data;
-        const buffer = Buffer.from(image);
-        return buffer.toString("base64");
-      } catch (error) {
-        console.error("Error fetching image:", error);
-        return null;
-      }
-    };
-    const fetchDataParallel = async () => {
-      const requests = [];
-      for (let index = 0; index < 4; index++) {
-        requests.push(fetchData());
-      }
-      
-      try {
-        const images = await Promise.all(requests);
-        setAvatars(images.filter((image) => image !== null));
-      } catch (error) {
-        console.error("Error fetching images in parallel:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchDataParallel();
+    if (protocol.current) {
+      protocol.current = false;
+      const fetchAvatars = async () => {
+        try {
+          let res = await fun.fetchAndSetAvatar();
+          if (res) {
+            setAvatars(res[0]);
+            setIsLoading(res[1]);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchAvatars();
+    }
   }, []);
   return (
     <>
@@ -102,7 +76,7 @@ function SetAvatar() {
               </div>
             ))}
           </div>
-          <button className="submit-btn" onClick={setProfilePicture}>
+          <button className="submit-btn" onClick={handleSetProfilePicture}>
             Set As Profile Picture
           </button>
         </Container>

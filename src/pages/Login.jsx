@@ -1,74 +1,52 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useState,useEffect  } from "react";
+import React, { useState, useEffect } from "react";
+import fun from "./../components/Functions";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import logo from "./../assets/logo.svg";
-import {ToastContainer, toast} from "react-toastify"; 
-import "react-toastify/dist/ReactToastify.css"; 
-import axios from "axios";
-import { loginRoute } from "../utils/APIRoutes";
 function Login() {
+
+  const navigate = useNavigate();
+  useEffect(()=>{
+    fun.useLocalStorageAndNavigate(navigate);
+  },[])
+
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
-  useEffect(()=>{
-    if(localStorage.getItem('chat-app-user') && localStorage.getItem('chat-app-user') != null){
-      navigate("/");
-    }
-  },  [navigate]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if(handleValidation()){
-      const {  email, password } = values;
-      const {data} = await axios.post(loginRoute, {
-        email,
-        password,
-      })
-      if(data.status === false){
-        toast.error(data.message);
-      }else if(data.status === "Success"){
-        localStorage.setItem('chat-app-user', JSON.stringify(data.payload));
-        navigate("/set-Avatar");
-      }
+  const handleLogin =(event)=>{
+    try {
+      event.preventDefault();
+      let VALIDATE = fun.handleLoginValidation(values, toast);
+      if(VALIDATE){
+        fun.handleLoginSubmit(VALIDATE, values, toast, navigate)
+      }   
+      else{
+        console.log(VALIDATE);
+      }   
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  const handleValidation = () => {
-    const { email, password } = values;
-    if(email === ""){
-      toast.error("Email is required", {
-        position: "bottom-right",
-        autoClose: 8000,
-        pauseOnHover: true,
-        draggable: false,
-        theme:"colored",
-      })
-      return false
-    } else if(password.length === 0 && password.length > 25){
-      toast.error("Valid password required.", {
-        position: "bottom-right",
-        autoClose: 8000,
-        pauseOnHover: true,
-        draggable: false,
-        theme:"colored",
-      })
-      return false
-    } 
-    return true;
-  };
+  }
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
+
   return (
     <>
       <FromContainer>
-        <form id="register_Login_Form" onSubmit={(event) => handleSubmit(event)}>
+        <form
+          id="register_Login_Form"
+          onSubmit={(event) => handleLogin(event)}
+        >
           <div className="brand">
-            <img srcSet ={logo} alt=""/>
+            <img srcSet={logo} alt="" />
             <h1>Chatify</h1>
           </div>
 
@@ -79,7 +57,6 @@ function Login() {
               name="email"
               id="email_Reg"
               onChange={(e) => handleChange(e)}
-              
             />
           </div>
 
@@ -102,7 +79,9 @@ function Login() {
           </span>
         </form>
       </FromContainer>
-      <ToastContainer toastStyle={{ backgroundColor: "#ffffff", color:"#3E54AC"}} />
+      <ToastContainer
+        toastStyle={{ backgroundColor: "#ffffff", color: "#3E54AC" }}
+      />
     </>
   );
 }
