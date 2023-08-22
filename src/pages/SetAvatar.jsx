@@ -15,7 +15,6 @@ function SetAvatar() {
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAvatars, setSelectedAvatars] = useState(undefined);
-
   const handleSetProfilePicture = async () => {
     try {
       let res = await fun.setProfilePicture(
@@ -31,7 +30,6 @@ function SetAvatar() {
       console.log(error);
     }
   };
-
   useEffect(() => {
     if (protocol.current) {
       protocol.current = false;
@@ -49,6 +47,7 @@ function SetAvatar() {
       fetchAvatars();
     }
   }, []);
+
   return (
     <>
       {isLoading ? (

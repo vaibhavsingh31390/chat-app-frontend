@@ -1,66 +1,40 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react";
+import fun from "./../components/Functions";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Contact from "./../components/Contacts";
 import Welcome from "./../components/Welcome";
 import ChatContainer from "./../components/ChatContainer";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import { chatRouteAllUsers } from "../utils/APIRoutes";
+
 
 function Chat() {
+  const firstRender = useRef(true);
   const [contacts, setContacts] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [currentSelected, setCurrentSelected] = useState(undefined);
   const [currentSelectedUser, setCurrentSelectedUser] = useState({ undefined });
+
   const navigate = useNavigate();
-  const firstRender = useRef(true);
-  const assignCurrentUser = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("chat-app-user"));
-      const userMeta = JSON.parse(localStorage.getItem("chat-app-user-meta"));
-      setcurrentUser([user, userMeta.avatarImage]);
-      if (user) {
-        if (userMeta) {
-          return user;
-        } else {
-          navigate("/set-avatar");
-          return null; // Return early if navigating
-        }
-      } else {
-        navigate("/");
-        return null; // Return early if navigating
-      }
-    } catch (error) {
-      navigate("/");
-    }
-  };
 
   useEffect(() => {
     if (firstRender.current) {
-      firstRender.current = false;
-      const fetchContacts = async () => {
-        const user = await assignCurrentUser();
-        if (user) {
-          try {
-            const response = await axios.get(chatRouteAllUsers, {
-              params: {
-                username: user.username,
-                token: user.token,
-              },
-            });
-            setContacts(response.data.payload.list);
-          } catch (error) {
-            console.error(error);
+      const handleSetContacts = async ()=>{
+        try {
+          let res = await fun.fetchContacts(navigate)
+          if(res){
+            setContacts(res[0]);
+            setcurrentUser(res[1])
           }
-        } else {
-          navigate("/");
+        } catch (error) {
+          console.log(error);
         }
-      };
-      fetchContacts();
+      }
+      handleSetContacts();
+        firstRender.current = false;
     }
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

@@ -13,10 +13,21 @@ function Contact({
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   useEffect(() => {
     if (currentUser) {
-      setCurrentName(currentUser[0]);
-      setCurrentUserImage(currentUser[1]);
+      let username = currentUser[0];
+      let Avatar = currentUser[1];
+      if (username && Avatar) {
+        setCurrentName(username.username);
+        setCurrentUserImage(Avatar);
+      }
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if (currentSelectedUser) {
+      console.log(currentSelectedUser);
+      localStorage.setItem("current-chat-data", JSON.stringify({_id : currentSelectedUser._id, username : currentSelectedUser.Username}));
+    }
+  }, [currentSelectedUser]);
 
   return (
     <>
@@ -38,9 +49,9 @@ function Contact({
                 onClick={() => {
                   setCurrentSelected(ind);
                   setCurrentSelectedUser({
-                    '_id': contact._id,
-                    'Avatar':contact.avatarImage,
-                    'Username': contact.username,
+                    _id: contact._id,
+                    Avatar: contact.avatarImage,
+                    Username: contact.username,
                   });
                 }}
               >

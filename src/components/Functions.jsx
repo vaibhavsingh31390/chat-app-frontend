@@ -3,7 +3,7 @@
 import React from "react";
 import axios from "axios";
 import { Buffer } from "buffer";
-import { loginRoute, registerRoute, setAvatarRoute } from "../utils/APIRoutes";
+import { loginRoute, registerRoute, setAvatarRoute, chatRouteAllUsers } from "../utils/APIRoutes";
 
 class Functions {
   constructor(options, user) {
@@ -26,14 +26,20 @@ class Functions {
       return null; // Or return some default value
     }
   }
+  static getUserDataMeta() {
+    const userMeta = localStorage.getItem("chat-app-user-meta");
+    if (userMeta) {
+      return JSON.parse(userMeta);
+    } else {
+      return null; // Or return some default value
+    }
+  }
+
   // GET CURRENT USER DATA
 
   // AUTH CHECK
   static useLocalStorageAndNavigate = (navigateFunction) => {
-    if (
-      this.getUserData() &&
-      this.getUserData() !== null
-    ) {
+    if (this.getUserData() && this.getUserData() !== null) {
       navigateFunction("/set-Avatar");
     } else {
     }
@@ -151,29 +157,39 @@ class Functions {
   // REGISTER MATHODS
 
   // SET AVATAR MATHODS
-  static fetchAndSetAvatar = async ( KEY = 'PlFuQgL1B4idCA', avatars, isLoading) =>{
-      try {
-        const requests = [];
-        console.log(this.getUserData());
-        for (let index = 0; index < 4; index++) {
-          const response = await axios.get(
-            `https://api.multiavatar.com/${Math.round(Math.random() * 1000)}?apikey=${KEY}`
-            );
-            const image = response.data;
-            const buffer = Buffer.from(image);
-            requests.push(buffer.toString("base64"));
-          }
-          const images = await Promise.all(requests);
-          avatars = images.filter((image) => image !== null);
-      } catch (error) {
-        console.error("Error fetching images in parallel:", error);
-      } finally {
-        isLoading = false;
-        return [avatars, isLoading];
+  static fetchAndSetAvatar = async (
+    KEY = "PlFuQgL1B4idCA",
+    avatars,
+    isLoading
+  ) => {
+    try {
+      const requests = [];
+      for (let index = 0; index < 4; index++) {
+        const response = await axios.get(
+          `https://api.multiavatar.com/${Math.round(
+            Math.random() * 1000
+          )}?apikey=${KEY}`
+        );
+        const image = response.data;
+        const buffer = Buffer.from(image);
+        requests.push(buffer.toString("base64"));
       }
+      const images = await Promise.all(requests);
+      avatars = images.filter((image) => image !== null);
+    } catch (error) {
+      console.error("Error fetching images in parallel:", error);
+    } finally {
+      isLoading = false;
+      return [avatars, isLoading];
+    }
   };
 
-  static setProfilePicture = async (Param, toast, avatars, navigateFunction) =>{
+  static setProfilePicture = async (
+    Param,
+    toast,
+    avatars,
+    navigateFunction
+  ) => {
     if (Param === undefined) {
       toast.error("Please select a profile picture.", this.options);
     } else {
@@ -193,8 +209,49 @@ class Functions {
         navigateFunction("/chat");
       }
     }
-  }
+  };
   // SET AVATAR MATHODS
+
+  // CHAT
+  static assignCurrentUser =  (navigateFunction) => {
+    try {
+      const user = this.getUserData();
+      const userMeta = this.getUserDataMeta();
+      if (!user) {
+        navigateFunction("/");
+        return null; // Return early if navigating
+      }
+
+      if (!userMeta) {
+        navigateFunction("/set-avatar");
+        return null; // Return early if navigating
+      }
+      const currentUser = [user, userMeta.avatarImage];
+      return currentUser;
+    } catch (error) {
+      navigateFunction("/");
+    }
+  };
+
+  static fetchContacts = async (navigateFunction)=>{
+        const user = this.assignCurrentUser(navigateFunction);
+        if (user) {
+          try {
+            const response = await axios.get(chatRouteAllUsers, {
+              params: {
+                username: user[0].username,
+                token: user[0].token,
+              },
+            });
+            return [response.data.payload.list, user]
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          navigateFunction("/");
+        }
+  }
+  // CHAT
 }
 
 export default Functions;
