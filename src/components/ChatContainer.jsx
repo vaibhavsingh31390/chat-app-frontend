@@ -24,7 +24,7 @@ function ChatContainer({ currentSelected }) {
           <div className="active-status">last seen {20}m ago</div>
         </div>
         <div className="chat-messages">
-          <Message></Message>
+          <Message currentSelected={currentSelected} />
         </div>
         <div className="chat-input">
           <ChatInput currentSelected={currentSelected}/>

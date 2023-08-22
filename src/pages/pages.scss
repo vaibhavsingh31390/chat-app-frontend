@@ -352,6 +352,44 @@ $transition: 0.3s ease;
     }
   }
 
+  .Message_List {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 20px;
+    color: $black;
+  
+    &.left {
+      justify-content: flex-start;
+      text-align: left;
+    }
+  
+    &.right {
+      justify-content: flex-end;
+      text-align: right;
+    }
+  
+    .Message {
+      max-width: 70%;
+      padding: 10px;
+      border-radius: 5px;
+    }
+  
+    .MessageText {
+      background-color: $bg-color-primary;
+      color: $white;
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+  
+    .MessageTimestamp {
+      color: $text-color-secoundry;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+
+
   .chat-input {
     display: grid;
     align-items: center;

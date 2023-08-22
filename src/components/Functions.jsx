@@ -9,6 +9,7 @@ import {
   setAvatarRoute,
   chatRouteAllUsers,
   sendMessageRoute,
+  getMessagesRoute
 } from "../utils/APIRoutes";
 
 class Functions {
@@ -40,7 +41,6 @@ class Functions {
       return null; // Or return some default value
     }
   }
-
   // GET CURRENT USER DATA
 
   // AUTH CHECK
@@ -50,6 +50,7 @@ class Functions {
     } else {
     }
   };
+  // AUTH CHECK
 
   // LOGIN METHODS
   static handleLoginValidation = (values, toast) => {
@@ -282,6 +283,28 @@ class Functions {
       return error;
     }
   };
+
+  static getMessages = async (Param)=>{
+    try {
+      const userData = this.getUserData();
+      const response = await axios.get(getMessagesRoute, {
+        params : {
+          token: userData.token,
+          from: {
+            username: userData.username,
+            _id: userData._id,
+          },
+          to: {
+            username: Param[1].Username,
+            _id: Param[1]._id,
+          },
+        }
+      });
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
   // CHAT
 }
 
