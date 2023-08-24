@@ -318,11 +318,11 @@ class Functions {
   // CHAT
 
   // SOCKET 
-    static setSocket = (socket, io, host)=>{
-      if (!socket.current) {
-        return socket.current = io(host);
-      }
+  static setSocket = (socket, io, host)=>{
+    if (!socket.current) {
+      return socket.current = io(host);
     }
+  }
 
 }
 

@@ -25,7 +25,7 @@ function Contact({
 
   useEffect(() => {
     if (currentSelected) {
-      socket.emit('USER_IN_CHAT', {from : Functions.getUserData(), to : Functions.getSelectChatUser()})
+      socket.emit('USER_IN_CHAT', {user : Functions.getUserData(), match : Functions.getSelectChatUser()})
       localStorage.setItem("current-chat-data", JSON.stringify({_id : currentSelected[1]._id, username : currentSelected[1].Username}));
     }
     window.onbeforeunload = () => {

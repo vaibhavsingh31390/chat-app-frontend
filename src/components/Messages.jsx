@@ -10,7 +10,7 @@ function Message({ currentSelected, socket }) {
   const [messagesList, setMessageList] = useState([]);
   const [messagesArrived, setMessagesArrived] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const [messageStatus, setMessageStatus] = useState('SENT');
   const messageContainerRef = useRef(null);
 
   useEffect(() => {
@@ -27,6 +27,21 @@ function Message({ currentSelected, socket }) {
     };
     handleGetMsg();
   }, [currentSelected]);
+
+  useEffect(()=>{
+    socket.on("MSG_DELIVERED_ACK", (data) => {
+      setMessageStatus(data);
+    });
+
+    socket.on("MSG_SEEN", (data) => {
+      setMessageStatus(data);
+    });
+
+    return () => {
+      socket.off("MSG_DELIVERED_ACK");
+      socket.off("MSG_SEEN");
+    };
+  },[messageStatus])
 
   useEffect(() => {
     socket.on("SEND_MESSAGE", (data) => {
@@ -58,13 +73,16 @@ function Message({ currentSelected, socket }) {
     return () => {
       socket.off("MSG_DELIVERED");
     };
-  }, [messagesArrived, messagesList]);
+  }, [messagesArrived]);
 
   useEffect(() => {
     if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
     }
   }, [messagesList]);
+
+  console.log(messageStatus);
 
   return (
     <div className="chat-messages">
@@ -80,7 +98,21 @@ function Message({ currentSelected, socket }) {
               >
                 <div className="MessageText">{message.message.text}</div>
                 <div className="messageMeta">
-                  {/* ... (rest of your message status JSX) */}
+                  <div className="messageStatus">
+                    {messageStatus === "SENT" && message.from._id !== currentSelected[1]._id ? (
+                      <FontAwesomeIcon icon={faCheck} />
+                    ) : messageStatus === "DELIVERED" && message.from._id !== currentSelected[1]._id ? (
+                      <FontAwesomeIcon icon={faCheckDouble} />
+                    ) : messageStatus === "SEEN" && message.from._id !== currentSelected[1]._id ? (
+                      <FontAwesomeIcon
+                        className="blue-icon"
+                        icon={faCheckDouble}
+                      />
+                    ): ""}
+                  </div>
+                  <div className="MessageTimestamp">{
+                    new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </div>
                 </div>
               </div>
             ))
@@ -96,8 +128,8 @@ function Message({ currentSelected, socket }) {
 }
 
 const MessageContainer = styled.div`
-  height: 100%;
-  overflow-y: auto; 
+  max-height: 100%;
+  overflow-y: auto;
 `;
 
 export default Message;
