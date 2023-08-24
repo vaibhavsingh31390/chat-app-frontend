@@ -1,39 +1,51 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react";
 import fun from "./../components/Functions";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Contact from "./../components/Contacts";
 import Welcome from "./../components/Welcome";
 import ChatContainer from "./../components/ChatContainer";
 import "react-toastify/dist/ReactToastify.css";
-
+import socket from "../utils/Socket";
 
 function Chat() {
   const firstRender = useRef(true);
   const [contacts, setContacts] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [currentSelected, setCurrentSelected] = useState(undefined);
+  const [onlineList, setOnlineList] = useState([]);
 
   const navigate = useNavigate();
+  useEffect(() => {
+    socket.on("ONLINE_LIST", (list) => {
+      setOnlineList(list);
+    });
+
+    return () => {
+      socket.off("ONLINE_LIST");
+    };
+  }, []);
 
   useEffect(() => {
     if (firstRender.current) {
-      const handleSetContacts = async ()=>{
+      const handleSetContacts = async () => {
         try {
-          let res = await fun.fetchContacts(navigate)
-          if(res){
+          let res = await fun.fetchContacts(navigate);
+          if (res) {
             setContacts(res[0]);
-            setcurrentUser(res[1])
+            setcurrentUser(res[1]);
+            socket.emit("ADD_USER", res[1][0]._id);
+            socket.off("ADD_USER");
           }
         } catch (error) {
           console.log(error);
         }
-      }
+      };
       handleSetContacts();
-        firstRender.current = false;
+      firstRender.current = false;
     }
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -44,10 +56,13 @@ function Chat() {
           currentUser={currentUser}
           currentSelected={currentSelected}
           setCurrentSelected={setCurrentSelected}
+          socket={socket}
         />
         {currentSelected || currentSelected === 0 ? (
           <ChatContainer
-          currentSelected={currentSelected}
+            currentSelected={currentSelected}
+            socket={socket}
+            onlineList={onlineList}
           ></ChatContainer>
         ) : (
           <Welcome currentUser={currentUser}></Welcome>

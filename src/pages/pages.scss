@@ -350,44 +350,91 @@ $transition: 0.3s ease;
         }
       }
     }
+
+    .active-status {
+      svg {
+        color: gray;
+
+        &.active {
+          color: green;
+        }
+      }
+    }
   }
 
-  .Message_List {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 20px;
-    color: $black;
-  
-    &.left {
-      justify-content: flex-start;
-      text-align: left;
-    }
-  
-    &.right {
-      justify-content: flex-end;
-      text-align: right;
-    }
-  
-    .Message {
-      max-width: 70%;
-      padding: 10px;
-      border-radius: 5px;
-    }
-  
-    .MessageText {
-      background-color: $bg-color-primary;
-      color: $white;
-      padding: 8px 12px;
-      border-radius: 5px;
-    }
-  
-    .MessageTimestamp {
-      color: $text-color-secoundry;
-      font-size: 12px;
-      margin-top: 5px;
+  .chat-messages {
+    .Message_List {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 1em;
+      color: $black;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: $white;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: $bg-color-primary;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: $bg-color-primary;
+      }
+
+      .Message {
+        width: fit-content;
+        max-width: 70%;
+        border-radius: 1em;
+
+        &.left {
+          justify-self: start;
+          text-align: left;
+        }
+
+        &.right {
+          justify-self: end;
+          text-align: right;
+        }
+
+        .MessageText {
+          background-color: $bg-color-primary;
+          color: $white;
+          padding: 8px 12px;
+          border-radius: 5px;
+        }
+
+        .messageMeta {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          padding: 3px 0px;
+          align-items: center;
+
+          .MessageTimestamp {
+            color: $text-color-secoundry;
+            font-size: 12px;
+          }
+
+          .messageStatus {
+            text-align: left;
+
+            .blue-icon {
+              color: $bg-color-primary;
+            }
+          }
+        }
+
+
+      }
+
+
     }
   }
+
 
 
   .chat-input {
@@ -400,6 +447,7 @@ $transition: 0.3s ease;
       .emoji-picker {
         position: absolute;
         left: 3%;
+
         svg {
           transition: $transition;
           font-size: 24px;
@@ -425,23 +473,25 @@ $transition: 0.3s ease;
           position: absolute;
           bottom: 99px;
           background-color: #1745a11a !important;
-          .epr-emoji-category-label{
+
+          .epr-emoji-category-label {
             background-color: $bg-color-primary;
             color: $white;
           }
-          .epr-body{
+
+          .epr-body {
             &::-webkit-scrollbar {
               width: 5px;
             }
-      
+
             &::-webkit-scrollbar-track {
               background: $white;
             }
-      
+
             &::-webkit-scrollbar-thumb {
               background: $bg-color-primary;
             }
-      
+
             &::-webkit-scrollbar-thumb:hover {
               background: $bg-color-primary;
             }

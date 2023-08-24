@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import logo from "./../assets/logo.svg";
 import styled from "styled-components";
+import Functions from "./Functions";
 function Contact({
   contacts,
   currentUser,
   currentSelected,
   setCurrentSelected,
-  currentSelectedUser,
-  setCurrentSelectedUser,
+  socket
 }) {
   const [currentName, setCurrentName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
@@ -23,10 +24,17 @@ function Contact({
   }, [currentUser]);
 
   useEffect(() => {
-    if (currentSelectedUser) {
-      localStorage.setItem("current-chat-data", JSON.stringify({_id : currentSelectedUser._id, username : currentSelectedUser.Username}));
+    if (currentSelected) {
+      socket.emit('USER_IN_CHAT', {from : Functions.getUserData(), to : Functions.getSelectChatUser()})
+      localStorage.setItem("current-chat-data", JSON.stringify({_id : currentSelected[1]._id, username : currentSelected[1].Username}));
     }
-  }, [currentSelectedUser]);
+    window.onbeforeunload = () => {
+      localStorage.removeItem("current-chat-data");
+    };
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, [currentSelected]);
 
   return (
     <>

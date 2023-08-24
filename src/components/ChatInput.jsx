@@ -5,8 +5,7 @@ import styled from "styled-components";
 import Picker from "emoji-picker-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
-function ChatInput({ currentSelected }) {
-
+function ChatInput({ currentSelected, socket }) {
   const [message, setMessage] = useState("");
   const [emojiPickState, setEmojiPickSate] = useState(false);
   const HandleEmojiPicker = () => {
@@ -21,9 +20,9 @@ function ChatInput({ currentSelected }) {
     e.preventDefault();
     if (message.length > 0) {
       try {
-        let res = await fun.sendMessage(currentSelected, message);
+        let res = await fun.sendMessage(currentSelected, message, socket);
         if (res.status === 201) {
-          console.log(res);
+          // console.log(res.data.payload.message);
           setMessage("");
         }
       } catch (error) {}
@@ -32,34 +31,36 @@ function ChatInput({ currentSelected }) {
 
   return (
     <>
-      <InputContainer className="InputContainer">
-        <div className="emoji-picker">
-          {emojiPickState && <Picker onEmojiClick={handleEmojiClick} />}
-          <FontAwesomeIcon icon={faFaceSmile} onClick={HandleEmojiPicker} />
-        </div>
-        <div className="input-form-message">
-          <form id="message_form" onSubmit={(event) => handleSend(event)}>
-            <div className="form-control message_box">
-              <input
-                type="text"
-                name="message"
-                id="message_Chat"
-                value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                }}
-                placeholder="Type your message..."
-              />
-            </div>
-            <div className="form-control message_button">
-              <button type="submit" id="message_send">
-                <FontAwesomeIcon icon={faPaperPlane} />
-                Send
-              </button>
-            </div>
-          </form>
-        </div>
-      </InputContainer>
+      <div className="chat-input">
+        <InputContainer className="InputContainer">
+          <div className="emoji-picker">
+            {emojiPickState && <Picker onEmojiClick={handleEmojiClick} />}
+            <FontAwesomeIcon icon={faFaceSmile} onClick={HandleEmojiPicker} />
+          </div>
+          <div className="input-form-message">
+            <form id="message_form" onSubmit={(event) => handleSend(event)}>
+              <div className="form-control message_box">
+                <input
+                  type="text"
+                  name="message"
+                  id="message_Chat"
+                  value={message}
+                  onChange={(e) => {
+                    setMessage(e.target.value);
+                  }}
+                  placeholder="Type your message..."
+                />
+              </div>
+              <div className="form-control message_button">
+                <button type="submit" id="message_send">
+                  <FontAwesomeIcon icon={faPaperPlane} />
+                  Send
+                </button>
+              </div>
+            </form>
+          </div>
+        </InputContainer>
+      </div>
     </>
   );
 }

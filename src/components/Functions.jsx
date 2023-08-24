@@ -41,6 +41,15 @@ class Functions {
       return null; // Or return some default value
     }
   }
+
+  static getSelectChatUser() {
+    const userMeta = localStorage.getItem("current-chat-data");
+    if (userMeta) {
+      return JSON.parse(userMeta);
+    } else {
+      return null; // Or return some default value
+    }
+  }
   // GET CURRENT USER DATA
 
   // AUTH CHECK
@@ -259,7 +268,7 @@ class Functions {
     }
   };
 
-  static sendMessage = async (Param, Message) => {
+  static sendMessage = async (Param, Message, socket) => {
     try {
       const userData = this.getUserData();
       const response = await axios.post(sendMessageRoute, {
@@ -278,6 +287,7 @@ class Functions {
           text: Message,
         },
       });
+      // socket.current.emit('SEND_MESSAGE', response.data.payload.message);
       return response;
     } catch (error) {
       return error;
@@ -306,6 +316,14 @@ class Functions {
     }
   }
   // CHAT
+
+  // SOCKET 
+    static setSocket = (socket, io, host)=>{
+      if (!socket.current) {
+        return socket.current = io(host);
+      }
+    }
+
 }
 
 export default Functions;
