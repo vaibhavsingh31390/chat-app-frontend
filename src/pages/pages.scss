@@ -227,18 +227,29 @@ $transition: 0.3s ease;
 
     .brand {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       gap: 1rem;
       padding: 1rem;
 
-      img {
-        max-width: 2rem;
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          max-width: 2rem;
+          margin-right: 1em;
+        }
+
+        h1 {
+          color: $text-color-main;
+          font-size: 16px;
+        }
       }
 
-      h1 {
-        color: $text-color-main;
-        font-size: 16px;
+      .menu-toggle{
+        cursor: pointer;
       }
     }
 

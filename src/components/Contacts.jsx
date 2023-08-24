@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import logo from "./../assets/logo.svg";
 import styled from "styled-components";
 import Functions from "./Functions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 function Contact({
   contacts,
   currentUser,
@@ -12,6 +14,9 @@ function Contact({
 }) {
   const [currentName, setCurrentName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
+
+  const [menuToggle, setMenuToggle] = useState([false]);
+
   useEffect(() => {
     if (currentUser) {
       let username = currentUser[0];
@@ -41,8 +46,16 @@ function Contact({
       {currentUserImage && currentName && (
         <ContactsContainer className="left_Section">
           <div className="brand">
-            <img srcSet={logo} alt="" />
-            <h1>Chatify</h1>
+            <div className="logo">
+              <img srcSet={logo} alt=""/>
+              <h1> Chatify</h1>
+            </div>
+            <div className="menu-toggle" onClick={()=>{
+              setMenuToggle(!menuToggle)
+              console.log('HELLO', menuToggle);
+            }}>
+              <FontAwesomeIcon icon={faBars} />
+            </div>
           </div>
 
           <div className="contacts">
