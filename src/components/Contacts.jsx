@@ -3,19 +3,18 @@ import React, { useEffect, useState } from "react";
 import logo from "./../assets/logo.svg";
 import styled from "styled-components";
 import Functions from "./Functions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 function Contact({
   contacts,
   currentUser,
   currentSelected,
   setCurrentSelected,
-  socket
+  socket,
+  menuToggle
 }) {
   const [currentName, setCurrentName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
 
-  const [menuToggle, setMenuToggle] = useState([false]);
+
 
   useEffect(() => {
     if (currentUser) {
@@ -30,8 +29,8 @@ function Contact({
 
   useEffect(() => {
     if (currentSelected) {
-      socket.emit('USER_IN_CHAT', {user : Functions.getUserData(), match : Functions.getSelectChatUser()})
       localStorage.setItem("current-chat-data", JSON.stringify({_id : currentSelected[1]._id, username : currentSelected[1].Username}));
+      socket.emit('USER_IN_CHAT', {user : Functions.getUserData(), match : Functions.getSelectChatUser()})
     }
     window.onbeforeunload = () => {
       localStorage.removeItem("current-chat-data");
@@ -44,17 +43,11 @@ function Contact({
   return (
     <>
       {currentUserImage && currentName && (
-        <ContactsContainer className="left_Section">
+        <ContactsContainer className={`left_Section ${menuToggle ? 'toggleOn' : 'toggleOff'}`}>
           <div className="brand">
             <div className="logo">
               <img srcSet={logo} alt=""/>
               <h1> Chatify</h1>
-            </div>
-            <div className="menu-toggle" onClick={()=>{
-              setMenuToggle(!menuToggle)
-              console.log('HELLO', menuToggle);
-            }}>
-              <FontAwesomeIcon icon={faBars} />
             </div>
           </div>
 

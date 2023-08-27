@@ -17,37 +17,43 @@ function ChatInput({ currentSelected, socket }) {
     setMessage(msg);
   };
   const handleSend = async (e) => {
+
     e.preventDefault();
     if (message.length > 0) {
       try {
         let res = await fun.sendMessage(currentSelected, message, socket);
         if (res.status === 201) {
           // console.log(res.data.payload.message);
+          document.getElementById("message_Chat").textContent = "";
           setMessage("");
         }
       } catch (error) {}
     }
   };
-
   return (
     <>
       <div className="chat-input">
         <InputContainer className="InputContainer">
-          <div className="emoji-picker">
-            {emojiPickState && <Picker onEmojiClick={handleEmojiClick} />}
-            <FontAwesomeIcon icon={faFaceSmile} onClick={HandleEmojiPicker} />
-          </div>
           <div className="input-form-message">
             <form id="message_form" onSubmit={(event) => handleSend(event)}>
               <div className="form-control message_box">
-                <input
+              <div className="emoji-picker">
+                {emojiPickState && <Picker onEmojiClick={handleEmojiClick} />}
+                <FontAwesomeIcon icon={faFaceSmile} onClick={HandleEmojiPicker} />
+              </div>
+                <div
                   type="text"
                   name="message"
                   id="message_Chat"
-                  value={message}
-                  onChange={(e) => {
-                    setMessage(e.target.value);
+                  onInput={(e) => {
+                    setMessage(e.currentTarget.textContent);
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSend(e);
+                    }}}
+                  contentEditable="true"
                   placeholder="Type your message..."
                 />
               </div>
@@ -66,8 +72,5 @@ function ChatInput({ currentSelected, socket }) {
 }
 const InputContainer = styled.div`
   position: relative;
-  display: grid;
-  grid-template-columns: 100%;
-  align-items: center;
 `;
 export default ChatInput;

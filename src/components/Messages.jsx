@@ -82,7 +82,6 @@ function Message({ currentSelected, socket }) {
     }
   }, [messagesList]);
 
-  console.log(messageStatus);
 
   return (
     <div className="chat-messages">

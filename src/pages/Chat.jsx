@@ -11,6 +11,7 @@ import socket from "../utils/Socket";
 
 function Chat() {
   const firstRender = useRef(true);
+  const [menuToggle, setMenuToggle] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [currentUser, setcurrentUser] = useState([]);
   const [currentSelected, setCurrentSelected] = useState(undefined);
@@ -50,16 +51,19 @@ function Chat() {
   }, []);
   return (
     <Container>
-      <div className="chat-container">
+      <div className={`chat-container ${!menuToggle ? 'full_width' : ''}`}>
         <Contact
           contacts={contacts}
           currentUser={currentUser}
           currentSelected={currentSelected}
           setCurrentSelected={setCurrentSelected}
           socket={socket}
-        />
+          menuToggle={menuToggle}
+          />
         {currentSelected || currentSelected === 0 ? (
           <ChatContainer
+            menuToggle={menuToggle}
+            setMenuToggle={setMenuToggle}
             currentSelected={currentSelected}
             socket={socket}
             onlineList={onlineList}
